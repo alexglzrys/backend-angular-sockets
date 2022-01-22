@@ -1,3 +1,16 @@
+# Socket Server
+Backend de aplicaciones en tiempo real con Sockets, REST y Angular
+
+## Instalación
+```
+npm i
+tsc -w
+
+// levantar servidor con uno de lo siguiente comandos
+nodemon dist
+node dist
+```
+
 ## Configurar proyecto Express con TS
 
 ```

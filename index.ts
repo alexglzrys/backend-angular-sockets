@@ -1,5 +1,6 @@
 import bodyParser from "body-parser";
 import Server from "./clases/server";
+import cors from 'cors';
 import { SERVER_PORT } from "./global/environment";
 import router from "./routes/router";
 
@@ -9,6 +10,8 @@ const server = new Server();
 // Middlewares
 server.app.use(bodyParser.urlencoded({ extended: true }));
 server.app.use(bodyParser.json());
+// cors
+server.app.use(cors({ origin: true, credentials: true }));
 
 // Configuración de rutas
 server.app.use('/', router)
