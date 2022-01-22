@@ -3,6 +3,8 @@ import SocketIO from 'socket.io';
 import http from 'http';
 import { SERVER_PORT } from '../global/environment';
 
+import * as socket from '../sockets/socket'
+
 export default class Server {
     private static _instance: Server;
 
@@ -29,6 +31,7 @@ export default class Server {
             }
         } );
 
+        // Esta función es la encargada de escuchar todos los eventos (mensajes) enviados a través de sockets
         this.escucharSockets();
     }
 
@@ -42,8 +45,15 @@ export default class Server {
     private escucharSockets()
     {
         console.log('Escuchando conexiones - sockets');
+        // Escuchar cuando un cliente se conecta al servidor
         this.io.on('connection', cliente => {
+
+            // En este punto se declaran todos los eventos que el cliente puede escuchar o puede emitir
+            // Por tanto se recomienda declarar toda esa lógica en archivos separados
             console.log('Cliente conectado');
+
+             // Desconectar
+            socket.desconectar(cliente)
         })
     }
 
