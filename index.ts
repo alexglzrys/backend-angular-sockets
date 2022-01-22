@@ -4,8 +4,8 @@ import cors from 'cors';
 import { SERVER_PORT } from "./global/environment";
 import router from "./routes/router";
 
-// Generar una instancia del servidor
-const server = new Server();
+// Generar una sola instancia del servidor (patrón Singleton)
+const server = Server.instance;
 
 // Middlewares
 server.app.use(bodyParser.urlencoded({ extended: true }));
