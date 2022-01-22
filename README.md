@@ -30,4 +30,8 @@ tsc -w
 nodemon dist
 ```
 
+## Instalar paquete de declaraciones de módulo (Tipos Express)
 
+```
+npm i --save-dev @types/express
+```
