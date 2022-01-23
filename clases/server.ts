@@ -52,8 +52,8 @@ export default class Server {
             // Por tanto se recomienda declarar toda esa lógica en archivos separados
             console.log('Cliente conectado');
 
-            // Mensajes
-            socket.mensaje(cliente);
+            // Mensajes (En este punto se da una interacción de recepción de eventos por parte del cliente, y emisión de eventos a los demás clientes)
+            socket.mensaje(cliente, this.io);
 
             // Desconectar
             socket.desconectar(cliente)
