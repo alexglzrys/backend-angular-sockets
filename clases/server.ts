@@ -24,7 +24,7 @@ export default class Server {
         // Levantar un servidor HTTP puro que se encargue de gestionar nuestra aplicación de exppress
         this.httpServer = new http.Server( this.app );
         // Indicar a SocketIO que se encargue de escuchar el servidor HTTP
-        this.io = SocketIO( this.httpServer, {
+        this.io = (SocketIO as any)( this.httpServer, {
             cors: {
                 origin: true,
                 credentials: true
@@ -52,7 +52,10 @@ export default class Server {
             // Por tanto se recomienda declarar toda esa lógica en archivos separados
             console.log('Cliente conectado');
 
-             // Desconectar
+            // Mensajes
+            socket.mensaje(cliente);
+
+            // Desconectar
             socket.desconectar(cliente)
         })
     }
