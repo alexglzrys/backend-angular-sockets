@@ -4,7 +4,17 @@
  */
 
 import { Server, Socket } from "socket.io";
+import { Usuario } from "../clases/usuario";
+import { UsuariosLista } from "../clases/usuarios-lista";
 import { IMensaje } from "../interfaces/imensaje";
+
+export const usuariosConectados = new UsuariosLista();
+
+// Agregar el cliente al listado de usuarios conectados al socket server, identificandolo por el ID generado
+export const conectarCliente = (cliente: Socket) => {
+    const usuario = new Usuario(cliente.id);
+    usuariosConectados.agregar(usuario);
+}
 
 export const desconectar = (cliente: Socket) => {
     // ON permite escuchar un evento
@@ -12,6 +22,8 @@ export const desconectar = (cliente: Socket) => {
     // Escuchar cuando un cliente se desconecta del servidor
     cliente.on('disconnect', () => {
         console.log('Cliente desconectado');
+        // Borrar el cliente del listado de clientes conectados al socket server
+        usuariosConectados.borrarUsuario(cliente.id);
     })
 }
 
@@ -31,7 +43,8 @@ export const mensaje = (cliente: Socket, io: Server) => {
 export const configurarUsuario = (cliente: Socket, io: Server) => {
     // Configurar usuario
     cliente.on('configurar-usuario', (payload: { nombre: string }, callback: Function) => {
-        console.log('Usuario a configurar:', payload.nombre);
+        // console.log('Usuario a configurar:', payload.nombre);
+        usuariosConectados.actualizarNombre(cliente.id, payload.nombre);
         callback({
             ok: true,
             mensaje: `Usuario ${payload.nombre}, configurado`

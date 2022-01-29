@@ -50,7 +50,10 @@ export default class Server {
 
             // En este punto se declaran todos los eventos que el cliente puede escuchar o puede emitir
             // Por tanto se recomienda declarar toda esa lógica en archivos separados
-            console.log('Cliente conectado');
+            // console.log('Cliente conectado');
+
+            // Conectar cliente: 
+            socket.conectarCliente(cliente);
 
             // Configurar usuario
             socket.configurarUsuario(cliente, this.io);
