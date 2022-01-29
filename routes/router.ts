@@ -12,6 +12,12 @@ router.get('/mensajes', (req: Request, res: Response) => {
 
 router.post('/mensaje', (req: Request, res: Response) => {
     const { cuerpo, de } = req.body;
+    
+    // enviar mensaje a todos los usuarios conectados al canal global
+    const server = Server.instance;
+    const payload = {de, mensaje: cuerpo};
+    server.io.emit('mensaje-nuevo', payload);
+
     res.json({
         ok: true,
         cuerpo,
