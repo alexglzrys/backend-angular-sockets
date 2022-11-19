@@ -16,7 +16,7 @@ export const conectarCliente = (cliente: Socket) => {
     usuariosConectados.agregar(usuario);
 }
 
-export const desconectar = (cliente: Socket) => {
+export const desconectar = (cliente: Socket, io: Server) => {
     // ON permite escuchar un evento
 
     // Escuchar cuando un cliente se desconecta del servidor
@@ -24,6 +24,8 @@ export const desconectar = (cliente: Socket) => {
         console.log('Cliente desconectado');
         // Borrar el cliente del listado de clientes conectados al socket server
         usuariosConectados.borrarUsuario(cliente.id);
+        // Emitir evento para notificar a todos los clientes que la lista de usuarios activos ha cambiado
+        io.emit('usuarios-activos', usuariosConectados.getLista());
     })
 }
 
@@ -45,9 +47,19 @@ export const configurarUsuario = (cliente: Socket, io: Server) => {
     cliente.on('configurar-usuario', (payload: { nombre: string }, callback: Function) => {
         // console.log('Usuario a configurar:', payload.nombre);
         usuariosConectados.actualizarNombre(cliente.id, payload.nombre);
+        // Emitir evento para notificar a todos los clientes que la lista de usuarios activos ha cambiado
+        io.emit('usuarios-activos', usuariosConectados.getLista());
+
         callback({
             ok: true,
             mensaje: `Usuario ${payload.nombre}, configurado`
         });
+    });
+}
+
+export const obtenerUsuarios = (cliente: Socket, io: Server) => {
+    cliente.on('solicitar-usuarios-activos', () => {
+        // Enviarle la lista solo al cliente que la solicitó
+        io.to(cliente.id).emit('usuarios-activos', usuariosConectados.getLista());
     });
 }

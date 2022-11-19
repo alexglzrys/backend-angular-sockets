@@ -58,11 +58,14 @@ export default class Server {
             // Configurar usuario
             socket.configurarUsuario(cliente, this.io);
 
+            socket.obtenerUsuarios(cliente, this.io)
+            
             // Mensajes (En este punto se da una interacción de recepción de eventos por parte del cliente, y emisión de eventos a los demás clientes)
             socket.mensaje(cliente, this.io);
 
             // Desconectar
-            socket.desconectar(cliente)
+            socket.desconectar(cliente, this.io)
+
         })
     }
 
