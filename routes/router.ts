@@ -1,4 +1,4 @@
-import { Router, Request, Response } from 'express';
+import { Router, Request, Response, response } from 'express';
 import Server from '../clases/server';
 
 const router: Router = Router();
@@ -41,6 +41,26 @@ router.post('/mensajes/:id', (req: Request, res: Response) => {
         de,
         id
     });
+})
+
+// Servicio para recuperar los IDs de usuarios conectados (sockets)
+router.get('/usuarios', async (req: Request, res: Response) => {
+    const server = Server.instance;
+    try {
+        // Recuperar todos los sockets activos
+        const sockets = await server.io.allSockets();
+        return res.json({
+            ok: true,
+            // Devolverlos como un arreglo
+            clients: Array.from(sockets)
+        })
+    } catch(err) {
+        return res.json({
+            ok: false,
+            err
+        })
+    }
+    
 })
 
 export default router;
