@@ -1,5 +1,6 @@
 import { Router, Request, Response, response } from 'express';
 import Server from '../clases/server';
+import { usuariosConectados } from '../sockets/socket';
 
 const router: Router = Router();
 
@@ -62,5 +63,13 @@ router.get('/usuarios', async (req: Request, res: Response) => {
     }
     
 })
+
+// Servicio para mostrar la información completa de los usuarios activos (sockets)
+router.get('/usuarios/detalle', (req: Request, res: Response) => {
+    return res.json({
+        ok: true,
+        clientes: usuariosConectados.getLista()
+    })
+});
 
 export default router;
